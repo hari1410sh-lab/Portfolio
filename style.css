@@ -256,23 +256,22 @@ img {
 /* Large hero name */
 .hero-name {
   font-family: var(--font-display);
-  font-size: clamp(1.8rem, 8vw, 6.5rem); 
+  font-size: clamp(2.5rem, 4vw, 6.5rem);
   font-weight: 800;
-  line-height: 1;
+  line-height: 1.05;
   color: var(--white);
   margin-bottom: 12px;
-  word-break: break-word; 
-  overflow-wrap: break-word;
-  white-space: normal;
+  white-space: nowrap; 
 }
 
 /* Tagline below name */
 .hero-tagline {
   font-family: var(--font-display);
-  font-size: clamp(1.2rem, 3vw, 2rem);
+  font-size: clamp(1rem, 2vw, 2rem);
   font-weight: 400;
   color: var(--yellow);
   margin-bottom: 24px;
+  white-space: nowrap;
 }
 
 /* Decorative dot-grid background */
@@ -656,7 +655,21 @@ img {
 
 /* ---- 13. RESPONSIVE — MOBILE (≤ 600px) ---- */
 @media (max-width: 600px) {
+.hero-name {
+    font-size: clamp(1.6rem, 7vw, 2.8rem);
+    white-space: normal;
+    word-break: keep-all;
+  }
 
+  .hero-tagline {
+    font-size: clamp(0.9rem, 4vw, 1.2rem);
+    white-space: normal;
+  }
+
+  /* Smaller section padding on mobile */
+  .section {
+    padding: 72px 20px;
+  }
   /* Show hamburger, hide nav links */
   .hamburger {
     display: flex;
