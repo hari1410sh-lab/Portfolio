@@ -1,0 +1,713 @@
+/* CSS VARIABLES design tokens — change here to update everywhere */
+:root {
+  --black:       #0a0a0a;   /* main background */
+  --dark:        #111111;   /* card / section backgrounds */
+  --dark-border: #222222;   /* subtle borders */
+  --white:       #f0f0f0;   /* main text */
+  --white-dim:   #888888;   /* secondary / muted text */
+  --yellow:      #f5c518;   /* accent — hover, highlights */
+  --yellow-dim:  rgba(245, 197, 24, 0.12); /* soft yellow bg */
+
+  --font-display: 'Syne', sans-serif;    /* headings */
+  --font-body:    'DM Mono', monospace;  /* body text */
+
+  --nav-height:  68px;
+  --max-width:   1100px;
+  --radius:      4px;
+  --transition:  0.25s ease;
+}
+
+/* ---- 2. RESET & BASE ---- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth; /* enables smooth scrolling when nav links are clicked */
+  font-size: 16px;
+}
+
+body {
+  background-color: var(--black);
+  color: var(--white);
+  font-family: var(--font-body);
+  line-height: 1.7;
+  overflow-x: hidden; /* prevent horizontal scroll */
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* ---- 3. REUSABLE UTILITIES ---- */
+
+/* Wrapper to center content and limit max width */
+.section {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 100px 24px;
+}
+
+/* Section heading */
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: 56px;
+}
+
+.section-header {
+  margin-bottom: 0; /* spacing handled by section-title margin */
+}
+
+/* Yellow accent text */
+.highlight {
+  color: var(--yellow);
+}
+
+/* ---- 4. FADE-IN ANIMATION ---- */
+/* Elements start invisible and slide up; JS adds .visible to trigger */
+.fade-in {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---- 5. BUTTONS ---- */
+
+/* Base button styles shared by all button types */
+.btn {
+  display: inline-block;
+  padding: 12px 28px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition),
+              border-color var(--transition), transform var(--transition),
+              box-shadow var(--transition);
+}
+
+/* Solid yellow button */
+.btn-primary {
+  background: var(--yellow);
+  color: var(--black);
+  border: 2px solid var(--yellow);
+}
+
+.btn-primary:hover {
+  background: transparent;
+  color: var(--yellow);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(245, 197, 24, 0.2);
+}
+
+/* Outlined ghost button */
+.btn-outline {
+  background: transparent;
+  color: var(--white);
+  border: 2px solid var(--dark-border);
+}
+
+.btn-outline:hover {
+  border-color: var(--yellow);
+  color: var(--yellow);
+  transform: translateY(-2px);
+}
+
+/* Button inside project cards */
+.btn-card {
+  background: transparent;
+  color: var(--white-dim);
+  border: 1px solid var(--dark-border);
+  padding: 10px 20px;
+  font-size: 0.8rem;
+}
+
+.btn-card:hover {
+  background: var(--yellow-dim);
+  color: var(--yellow);
+  border-color: var(--yellow);
+  transform: translateX(4px);
+}
+
+/* ---- 6. NAVBAR ---- */
+.navbar {
+  position: fixed;         /* stays at top while scrolling */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--nav-height);
+  background: rgba(10, 10, 10, 0.92);
+  backdrop-filter: blur(12px);      /* frosted-glass effect */
+  border-bottom: 1px solid var(--dark-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  z-index: 1000; /* always on top */
+  transition: background var(--transition);
+}
+
+/* Logo / Initials */
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--yellow);
+  letter-spacing: 0.05em;
+}
+
+/* Nav link list — horizontal on desktop */
+.nav-links {
+  display: flex;
+  gap: 36px;
+}
+
+/* Each nav link */
+.nav-link {
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  color: var(--white-dim);
+  position: relative;
+  transition: color var(--transition);
+}
+
+/* Animated underline on hover */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--yellow);
+  transition: width var(--transition);
+}
+
+.nav-link:hover {
+  color: var(--yellow);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Hamburger button (mobile only — hidden on desktop) */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--white);
+  transition: transform var(--transition), opacity var(--transition);
+}
+
+/* Animate hamburger → X when menu is open */
+.hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+/* ---- 7. HOME SECTION ---- */
+.home {
+  position: relative;
+  min-height: 100vh;         /* full viewport height */
+  display: flex;
+  align-items: center;
+  padding-top: var(--nav-height); /* so content isn't behind the fixed navbar */
+  overflow: hidden;
+}
+
+/* Greeting line */
+.greeting {
+  font-size: 1.25rem;
+  letter-spacing: 0.2em;
+  color: var(--yellow);
+  margin-bottom: 12px;
+}
+
+/* Large hero name */
+.hero-name {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 9vw, 5rem);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--white);
+  margin-bottom: 12px;
+}
+
+/* Tagline below name */
+.hero-tagline {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  font-weight: 400;
+  color: var(--yellow);
+  margin-bottom: 24px;
+}
+
+/* Decorative dot-grid background */
+.hero-grid {
+  position: absolute;
+  top: 0;
+  right: -100px;
+  width: 55%;
+  height: 100%;
+  background-image: radial-gradient(circle, #2a2a2a 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.5;
+  pointer-events: none; 
+}
+
+/* ---- 8. ABOUT SECTION ---- */
+.about {
+  border-top: 1px solid var(--dark-border);
+}
+
+/* Side-by-side layout for image + text */
+.about-content {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 64px;
+  align-items: start;
+}
+
+/* Image wrapper — holds the photo and the decorative border */
+.about-image-wrapper {
+  position: relative;
+}
+
+/* Decorative offset border (yellow square behind the photo) */
+.about-image-border {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--yellow);
+  border-radius: var(--radius);
+  z-index: 0;
+}
+
+/* Placeholder shown before you add your real photo */
+.about-image-placeholder {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  aspect-ratio: 4 / 5;          /* portrait proportion */
+  background: var(--dark);
+  border: 1px solid var(--dark-border);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: border-color var(--transition);
+}
+
+.about-image-placeholder:hover {
+  border-color: var(--yellow);
+}
+
+.photo-icon {
+  font-size: 3rem;
+}
+
+.photo-hint {
+  font-size: 0.75rem;
+  color: var(--white-dim);
+  text-align: center;
+}
+
+/* Bio heading */
+.about-name {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* Bio paragraphs */
+.about-text p {
+  color: var(--white-dim);
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+}
+
+/* Skills / Tech tags row */
+.skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.skill-tag {
+  padding: 6px 16px;
+  font-size: 0.78rem;
+  border: 1px solid var(--dark-border);
+  border-radius: 999px; /* pill shape */
+  color: var(--white-dim);
+  transition: border-color var(--transition), color var(--transition),
+              background var(--transition);
+}
+
+.skill-tag:hover {
+  border-color: var(--yellow);
+  color: var(--yellow);
+  background: var(--yellow-dim);
+}
+
+/* ---- 9. PROJECTS SECTION ---- */
+.projects {
+  border-top: 1px solid var(--dark-border);
+}
+
+/* 3-column grid for project cards */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+/* Single project card */
+.project-card {
+  background: var(--dark);
+  border: 1px solid var(--dark-border);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: border-color var(--transition), transform var(--transition),
+              box-shadow var(--transition);
+}
+
+/* Hover effect: lift + yellow border */
+.project-card:hover {
+  border-color: var(--yellow);
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Top row: number + tag */
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-number {
+  font-size: 0.75rem;
+  color: var(--yellow);
+  letter-spacing: 0.15em;
+}
+
+.card-tag {
+  font-size: 0.7rem;
+  color: var(--white-dim);
+  border: 1px solid var(--dark-border);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+/* Project title */
+.card-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+/* Project description */
+.card-desc {
+  font-size: 0.85rem;
+  color: var(--white-dim);
+  line-height: 1.7;
+  flex: 1; /* pushes button to the bottom */
+}
+
+/* Tech stack mini-tags inside card */
+.card-tech {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.card-tech span {
+  font-size: 0.72rem;
+  color: var(--yellow);
+  background: var(--yellow-dim);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+/* ---- 10. RESUME SECTION ---- */
+.resume {
+  border-top: 1px solid var(--dark-border);
+}
+
+/* Side-by-side layout: timeline left, download right */
+.resume-content {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+
+/* Timeline heading (Experience / Education) */
+.timeline-group {
+  margin-bottom: 40px;
+}
+
+.timeline-heading {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--yellow);
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
+
+/* Each timeline row */
+.timeline-item {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+  padding-left: 16px;
+  border-left: 2px solid var(--dark-border);
+  padding-bottom: 8px;
+  transition: border-color var(--transition);
+}
+
+.timeline-item:hover {
+  border-left-color: var(--yellow);
+}
+
+/* Year column */
+.timeline-year {
+  font-size: 0.78rem;
+  color: var(--yellow);
+  min-width: 44px;
+  padding-top: 2px;
+}
+
+/* Job / education title */
+.timeline-item h4 {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+/* Company / university */
+.timeline-item p {
+  font-size: 0.82rem;
+  color: var(--white-dim);
+}
+
+/* Download box (right side) */
+.resume-download-box {
+  background: var(--dark);
+  border: 1px solid var(--dark-border);
+  border-radius: var(--radius);
+  padding: 48px 36px;
+  text-align: center;
+  position: sticky;
+  top: calc(var(--nav-height) + 24px); /* sticks while you scroll the timeline */
+  transition: border-color var(--transition);
+}
+
+.resume-download-box:hover {
+  border-color: var(--yellow);
+}
+
+.download-label {
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  color: var(--yellow);
+  margin-bottom: 12px;
+}
+
+.download-heading {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.download-subtext {
+  font-size: 0.85rem;
+  color: var(--white-dim);
+  margin-bottom: 32px;
+  line-height: 1.7;
+}
+
+/* ---- 11. FOOTER ---- */
+.footer {
+  border-top: 1px solid var(--dark-border);
+  text-align: center;
+  padding: 40px 24px;
+  font-size: 0.82rem;
+  color: var(--white-dim);
+}
+
+.footer-socials {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.footer-socials a {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--dark-border);
+  border-radius: var(--radius);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white-dim);
+  transition: color var(--transition), border-color var(--transition),
+              background var(--transition), transform var(--transition);
+}
+
+.footer-socials a:hover {
+  color: var(--yellow);
+  border-color: var(--yellow);
+  background: var(--yellow-dim);
+  transform: translateY(-2px);
+}
+
+.footer-socials svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.footer-sub {
+  margin-top: 14px;
+  font-size: 0.75rem;
+  opacity: 0.5;
+}
+
+/* ---- 12. RESPONSIVE — TABLET (≤ 900px) ---- */
+@media (max-width: 900px) {
+
+  /* Stack projects 2 columns */
+  .projects-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Stack about side-by-side → single column */
+  .about-content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  /* Make photo not too tall when stacked */
+  .about-image-placeholder {
+    aspect-ratio: 3 / 2;
+    max-height: 260px;
+  }
+
+  /* Stack resume columns */
+  .resume-content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .resume-download-box {
+    position: static; /* remove sticky on small screens */
+  }
+}
+
+/* ---- 13. RESPONSIVE — MOBILE (≤ 600px) ---- */
+@media (max-width: 600px) {
+
+  /* Show hamburger, hide nav links */
+  .hamburger {
+    display: flex;
+  }
+
+  /* Mobile nav menu: full-width dropdown */
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: var(--nav-height);
+    left: 0;
+    width: 100%;
+    background: rgba(10, 10, 10, 0.98);
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    border-top: 1px solid var(--dark-border);
+  }
+
+  /* Show nav links when JS adds .open class */
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-links li {
+    width: 100%;
+    text-align: center;
+  }
+
+  .nav-link {
+    display: block;
+    padding: 18px 0;
+    font-size: 1rem;
+    border-bottom: 1px solid var(--dark-border);
+  }
+
+  /* Single column projects on mobile */
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Smaller section padding on mobile */
+  .section {
+    padding: 72px 20px;
+  }
+
+  /* Smaller hero heading */
+  .hero-name {
+    font-size: clamp(2.4rem, 12vw, 4rem);
+  }
+
+  /* Stack buttons vertically */
+  .hero-buttons {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
